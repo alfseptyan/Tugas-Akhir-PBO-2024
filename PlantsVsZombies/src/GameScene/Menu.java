@@ -39,7 +39,7 @@ public class Menu extends JPanel {
         playButton = new JButton();
         playButton.setBounds((width - x) / 2, (height - y) / 2-30, 200, 50); // Mengatur posisi dan ukuran tombol
         playButton.setBackground(Color.WHITE); // Mengatur warna latar belakang tombol
-//        playButton.setBorderPainted(false); // Menghilangkan border tombol
+       playButton.setBorderPainted(false); // Menghilangkan border tombol
         playButton.setContentAreaFilled(false); // Membuat tombol transparan
         playButton.setFocusPainted(false); // Menghilangkan efek fokus pada tombol
         playButton.addActionListener(new ActionListener() {
@@ -54,13 +54,15 @@ public class Menu extends JPanel {
         creditButton = new JButton();
         creditButton.setBounds((width - x) / 2, (height - y) / 2 + 60, 200, 50);
         creditButton.setBackground(Color.WHITE);
-//        creditButton.setBorderPainted(false);
+        creditButton.setBorderPainted(false);
         creditButton.setContentAreaFilled(false);
         creditButton.setFocusPainted(false);
         creditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            ImageIcon imageIcon = new ImageIcon("/image/credit.jpg");
+            JLabel imageLabel = new JLabel(imageIcon);
+            JOptionPane.showMessageDialog(null, imageLabel, "Credit", JOptionPane.PLAIN_MESSAGE);
             }
         });
         add(creditButton);
@@ -71,7 +73,7 @@ public class Menu extends JPanel {
         exitButton = new JButton();
         exitButton.setBounds((width - x) / 2, (height - y) / 2 + 150, 200, 50); // Mengatur posisi dan ukuran tombol
         exitButton.setBackground(Color.WHITE); // Mengatur warna latar belakang tombol
-//        exitButton.setBorderPainted(false); // Menghilangkan border tombol
+        exitButton.setBorderPainted(false); // Menghilangkan border tombol
         exitButton.setContentAreaFilled(false); // Membuat tombol transparan
         exitButton.setFocusPainted(false); // Menghilangkan efek fokus pada tombol
         exitButton.addActionListener(new ActionListener() {
