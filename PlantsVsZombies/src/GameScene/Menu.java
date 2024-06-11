@@ -14,7 +14,7 @@ public class Menu extends JPanel {
     public Menu() {
         initComponents();
         setSize(1012, 785);
-//        bgImage  = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/menu.JPG"))).getImage();
+        bgImage  = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/main menu...jpg"))).getImage();
         
     }
 
