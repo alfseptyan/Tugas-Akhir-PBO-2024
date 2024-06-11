@@ -45,6 +45,9 @@ public class GameWindow extends JFrame {
     }
     public static void main(String[] args) {
           gw = new GameWindow(true);
-    }
 
+        Backsound player = new Backsound("PlantsVsZombies/out/production/jPvZ/Backsound");
+        player.playDaySound();
+        player.stop();
+    }
 }
