@@ -1,65 +1,85 @@
 package GameScene;
 
 import Main.GameWindow;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 import javax.swing.*;
+
 public class Menu extends JPanel {
-    Image bgImage;
-    private JButton playButton;
-    private JButton exitButton;
+    Image bgImage; // Variable untuk menyimpan gambar latar belakang
+    private JButton playButton; // Tombol untuk memulai permainan
+    private JButton creditButton; //Tombol untuk credit
+    private JButton exitButton; // Tombol untuk keluar dari aplikasi
+
     public Menu() {
-        initComponents();
-        setSize(1012, 785);
-        bgImage  = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/main menu...jpg"))).getImage();
-        
+        initComponents(); // Metode untuk menginisialisasi komponen
+        setSize(1012, 785); // Mengatur ukuran panel
+        // Memuat gambar latar belakang dari direktori resources
+        bgImage = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/main menu...jpg"))).getImage();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(bgImage,0,0,null);
-        
+        // Menggambar gambar latar belakang pada panel
+        g.drawImage(bgImage, 0, 0, null);
     }
+
     private void initComponents() {
         int x = 200;
         int y = 100;
         int width = 1012;
         int height = 785;
-//        setBackground(Color.BLACK);
-        setPreferredSize(new java.awt.Dimension(width, height));
-        setLayout(null);
+        setPreferredSize(new Dimension(width, height)); // Mengatur ukuran preferensi panel
+        setLayout(null); // Mengatur layout manager menjadi null untuk penempatan bebas komponen
 
-        playButton = new JButton("PLAY");
-        playButton.setBounds((width-x)/2, (height-y)/2, 200, 100); // Set the position and size of the button
-        playButton.setFont(new Font("Tahoma", Font.BOLD, 36));
-        playButton.setBackground(Color.WHITE);
+        // Inisialisasi tombol play
+        playButton = new JButton();
+        playButton.setBounds((width - x) / 2, (height - y) / 2-30, 200, 50); // Mengatur posisi dan ukuran tombol
+        playButton.setBackground(Color.WHITE); // Mengatur warna latar belakang tombol
+//        playButton.setBorderPainted(false); // Menghilangkan border tombol
+        playButton.setContentAreaFilled(false); // Membuat tombol transparan
+        playButton.setFocusPainted(false); // Menghilangkan efek fokus pada tombol
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameWindow.begin(); // Start the game when the button is clicked
+                GameWindow.begin(); // Memulai permainan ketika tombol diklik
             }
         });
-        add(playButton);
+        add(playButton); // Menambahkan tombol ke panel
 
-        exitButton = new JButton("EXIT");
-        exitButton.setBounds((width-x)/2,(height-y)/2+110,200,100);
-        exitButton.setFont(new Font("Tahoma", Font.BOLD, 36));
-        exitButton.setBackground(Color.white);
+        // Inisiasi tombol credit
+        creditButton = new JButton();
+        creditButton.setBounds((width - x) / 2, (height - y) / 2 + 60, 200, 50);
+        creditButton.setBackground(Color.WHITE);
+//        creditButton.setBorderPainted(false);
+        creditButton.setContentAreaFilled(false);
+        creditButton.setFocusPainted(false);
+        creditButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        add(creditButton);
+
+
+
+        // Inisialisasi tombol exit
+        exitButton = new JButton();
+        exitButton.setBounds((width - x) / 2, (height - y) / 2 + 150, 200, 50); // Mengatur posisi dan ukuran tombol
+        exitButton.setBackground(Color.WHITE); // Mengatur warna latar belakang tombol
+//        exitButton.setBorderPainted(false); // Menghilangkan border tombol
+        exitButton.setContentAreaFilled(false); // Membuat tombol transparan
+        exitButton.setFocusPainted(false); // Menghilangkan efek fokus pada tombol
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Define what happens when the button is clicked
-                System.exit(0); // For example, this will close the application
+                System.exit(0); // Menutup aplikasi ketika tombol diklik
             }
         });
-        add(exitButton);
-
-
+        add(exitButton); // Menambahkan tombol ke panel
     }
-
-
 }
