@@ -117,17 +117,18 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private void spawnZombie() {
         Random rnd = new Random();
         LevelData lvl = new LevelData();
-        String [] Level = lvl.Level[Integer.parseInt(lvl.Lvl)-1];
-        int [][] LevelValue = lvl.LevelValue[Integer.parseInt(lvl.Lvl)-1];
         int l = rnd.nextInt(5);
         int t = rnd.nextInt(100);
+
         Zombie z = null;
-        for(int i = 0;i<LevelValue.length;i++) {
-            if(t>=LevelValue[i][0]&&t<=LevelValue[i][1]) {
-                z = Zombie.getZombie(Level[i],GamePanel.this,l);
+        for (int i = 0; i < LevelData.SpawnProbability.length; i++) {
+            if (t >= LevelData.SpawnProbability[i][0] && t <= LevelData.SpawnProbability[i][1]) {
+                z = Zombie.getZombie(LevelData.ZombieTypes[i], GamePanel.this, l);
             }
         }
-        laneZombies.get(l).add(z);
+        if (z != null) {
+            laneZombies.get(l).add(z);
+        }
     }
 
 
@@ -193,18 +194,10 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     public static void setProgress(int num) {
         progress = progress + num;
         System.out.println(progress);
-        if(progress>=400) {
-            if(LevelData.Lvl.equals("1")) {
-                JOptionPane.showMessageDialog(null,"Level Completed !!!" + '\n' + "Starting next Level");
-                GameWindow.gw.dispose();
-                LevelData.write("2");
-                GameWindow.gw = new GameWindow();
-            }  else {
-                JOptionPane.showMessageDialog(null,"Level Completed !!!" + '\n' + "More Levels will come soon !!!" + '\n' + "Resetting data");
-                LevelData.write("1");
-                System.exit(0);
-            }
-            progress = 0;
+        if (progress > 200){
+            LevelData.changeSpawnProbability();
+        } else if (progress > 500) {
+            LevelData.changeSpawnProbability();
         }
     }
     @Override
