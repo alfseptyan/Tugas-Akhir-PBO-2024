@@ -47,6 +47,9 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
 
     private int sunScore;
     static int progress = 0;
+    private int waveNumber = 1;
+    private int zombiesInCurrentWave;
+    private int zombiesSpawnedInWave;
 
 
     public GamePanel(JLabel sunScoreboard){
@@ -57,6 +60,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         loadImages();
         initializeLanes();
         initializeColliders();
+        startWave();
 
         activeSuns = new ArrayList<>();
 
@@ -70,32 +74,64 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         advancerTimer.start();
 
         //Producer
-        sunProducer = new Timer(5000,(ActionEvent e) -> {
+        sunProducer = new Timer(10000,(ActionEvent e) -> {
             Random rnd = new Random();
             Sun sta = new Sun(this,rnd.nextInt(800)+100,0,rnd.nextInt(300)+200);
             activeSuns.add(sta);
             add(sta,new Integer(1));
         });
         sunProducer.start();
+    }
 
-        zombieProducer = new Timer(7000,(ActionEvent e) -> {
-            Random rnd = new Random();
-            LevelData lvl = new LevelData();
-            String [] Level = lvl.Level[Integer.parseInt(lvl.Lvl)-1];
-            int [][] LevelValue = lvl.LevelValue[Integer.parseInt(lvl.Lvl)-1];
-            int l = rnd.nextInt(5);
-            int t = rnd.nextInt(100);
-            Zombie z = null;
-            for(int i = 0;i<LevelValue.length;i++) {
-                if(t>=LevelValue[i][0]&&t<=LevelValue[i][1]) {
-                    z = Zombie.getZombie(Level[i],GamePanel.this,l);
-                }
+    private void startWave() {
+        // Reset the count of zombies spawned in the wave
+        zombiesSpawnedInWave = 0;
+
+        // Calculate the number of zombies and time delay based on the wave number
+        int zombiesToSpawn = calculateZombiesToSpawn(waveNumber);
+        int timeDelay = calculateTimeDelay(waveNumber);
+
+        // Set up the zombie producer timer
+        zombieProducer = new Timer(timeDelay, (ActionEvent e) -> {
+            spawnZombie();
+            zombiesSpawnedInWave++;
+            if (zombiesSpawnedInWave >= zombiesInCurrentWave) {
+                // Stop the timer and prepare for the next wave
+                zombieProducer.stop();
+                waveNumber++;
+                startWave();
             }
-            laneZombies.get(l).add(z);
         });
         zombieProducer.start();
-
     }
+    private int calculateZombiesToSpawn(int waveNumber) {
+        // Define logic to calculate the number of zombies based on the wave number
+        // Example: Increase zombies by 5 with each wave
+        return 5 * waveNumber;
+    }
+    private int calculateTimeDelay(int waveNumber) {
+        // Define logic to calculate the time delay based on the wave number
+        // Example: Decrease delay as the wave number increases
+        return Math.max(12000 - (waveNumber * 1000), 2000);
+    }
+    private void spawnZombie() {
+        Random rnd = new Random();
+        LevelData lvl = new LevelData();
+        int l = rnd.nextInt(5);
+        int t = rnd.nextInt(100);
+
+        Zombie z = null;
+        for (int i = 0; i < LevelData.SpawnProbability.length; i++) {
+            if (t >= LevelData.SpawnProbability[i][0] && t <= LevelData.SpawnProbability[i][1]) {
+                z = Zombie.getZombie(LevelData.ZombieTypes[i], GamePanel.this, l);
+            }
+        }
+        if (z != null) {
+            laneZombies.get(l).add(z);
+        }
+    }
+
+
     private void initUI(){
         setSize(1000,752);
         setLayout(null);
@@ -158,18 +194,10 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     public static void setProgress(int num) {
         progress = progress + num;
         System.out.println(progress);
-        if(progress>=400) {
-            if(LevelData.Lvl.equals("1")) {
-                JOptionPane.showMessageDialog(null,"Level Completed !!!" + '\n' + "Starting next Level");
-                GameWindow.gw.dispose();
-                LevelData.write("2");
-                GameWindow.gw = new GameWindow();
-            }  else {
-                JOptionPane.showMessageDialog(null,"Level Completed !!!" + '\n' + "More Levels will come soon !!!" + '\n' + "Resetting data");
-                LevelData.write("1");
-                System.exit(0);
-            }
-            progress = 0;
+        if (progress > 200){
+            LevelData.changeSpawnProbability();
+        } else if (progress > 500) {
+            LevelData.changeSpawnProbability();
         }
     }
     @Override
