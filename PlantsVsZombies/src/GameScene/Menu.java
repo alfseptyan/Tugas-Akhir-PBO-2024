@@ -17,7 +17,7 @@ public class Menu extends JPanel {
         initComponents(); // Metode untuk menginisialisasi komponen
         setSize(1012, 785); // Mengatur ukuran panel
         // Memuat gambar latar belakang dari direktori resources
-        bgImage = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/main menu...jpg"))).getImage();
+        bgImage = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/menu.jpg"))).getImage();
     }
 
     @Override
