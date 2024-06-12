@@ -25,7 +25,7 @@ public class GameWindow extends JFrame {
 
         getLayeredPane().add(sun,new Integer(3));
         setLocationRelativeTo(null);
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
     }
     public GameWindow(boolean b) {
