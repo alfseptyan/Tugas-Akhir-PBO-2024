@@ -60,8 +60,10 @@ public class Menu extends JPanel {
         creditButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            ImageIcon imageIcon = new ImageIcon("/image/credit.jpg");
-            JLabel imageLabel = new JLabel(imageIcon);
+                Image image = Toolkit.getDefaultToolkit().getImage("PlantsVsZombies/src/images/creditnew.png");
+                Image resizedImage = image.getScaledInstance(1012, 685, Image.SCALE_SMOOTH); // set desired width and height
+                ImageIcon imageIcon = new ImageIcon(resizedImage);
+                JLabel imageLabel = new JLabel(imageIcon);
             JOptionPane.showMessageDialog(null, imageLabel, "Credit", JOptionPane.PLAIN_MESSAGE);
             }
         });
