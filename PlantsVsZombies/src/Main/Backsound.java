@@ -1,36 +1,29 @@
 package Main;
 
-import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Backsound {
+    private Clip clip;
 
-    private Clip dayClip;
-
-    public Backsound(String dayFilePath) {
+    public Backsound(String filePath) {
         try {
-            // Memuat file audio untuk siang hari
-            File dayFile = new File(dayFilePath);
-            AudioInputStream dayStream = AudioSystem.getAudioInputStream(dayFile);
-            dayClip = AudioSystem.getClip();
-            dayClip.open(dayStream);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            File audioFile = new File(filePath);
+            if (audioFile.exists()) {
+                clip = AudioSystem.getClip();
+                clip.open(AudioSystem.getAudioInputStream(audioFile));
+            } else {
+                System.err.println("File not found: " + filePath);
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
     }
 
-    public void playDaySound() {
-        if (!dayClip.isRunning()) {
-            dayClip.setFramePosition(0);
-            dayClip.loop(Clip.LOOP_CONTINUOUSLY);
-            dayClip.start();
-        }
-    }
-
-    public void stop() {
-        if (dayClip.isRunning()) {
-            dayClip.stop();
+    public void play() {
+        if (clip != null) {
+            clip.start();
         }
     }
 }
