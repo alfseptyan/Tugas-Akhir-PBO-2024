@@ -5,10 +5,6 @@ package Main;/*
  */
 import java.io.*;
 import java.util.logging.Logger;
-/**
- *
- * @author Vaibhav Singh Sikarwar
- */
 public class LevelData {
     static String Lvl = "1";
    static String [][] Level = {{"Object.Enemies.NormalZombie"},{"Object.Enemies.NormalZombie","Object.Enemies.ConeHeadZombie"}};
