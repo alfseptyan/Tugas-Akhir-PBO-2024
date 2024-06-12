@@ -47,8 +47,11 @@ public class GameWindow extends JFrame {
         player.play();
 
     }
+
+
     public static void main(String[] args) {
           gw = new GameWindow(true);
-
+          Backsound menu = new Backsound("PlantsVsZombies/src/music/02. Crazy Dave (Intro Theme).wav");
+          menu.play();
     }
 }
