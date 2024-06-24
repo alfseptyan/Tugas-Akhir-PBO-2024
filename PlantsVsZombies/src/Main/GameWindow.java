@@ -1,8 +1,7 @@
 package Main;
 
 import javax.swing.*;
-
-import Projectiles.Pea;
+import javax.swing.JLabel;
 import Tool.*;
 import GameScene.*;
 
@@ -17,7 +16,7 @@ public class GameWindow extends JFrame {
         sun.setLocation(37,750);
         sun.setSize(60,20);
 
-        JLabel scoreLabel=new JLabel("Score:");
+        JLabel scoreLabel = new JLabel("Score:");
         scoreLabel.setLocation(750, 680);
         scoreLabel.setSize(200, 20);
         getLayeredPane().add(scoreLabel, new Integer(2));
@@ -32,7 +31,7 @@ public class GameWindow extends JFrame {
         waveNumberLabel.setSize(200, 20);
         getLayeredPane().add(waveNumberLabel, new Integer(2));
 
-        GamePanel gp = new GamePanel(sun,zombieDefeatedLabel,waveNumberLabel);
+        GamePanel gp = new GamePanel(sun, zombieDefeatedLabel, waveNumberLabel);
         gp.setLocation(0,0);
         getLayeredPane().add(gp,new Integer(0));
         DefensePanel defensePanel = new DefensePanel(gp);
