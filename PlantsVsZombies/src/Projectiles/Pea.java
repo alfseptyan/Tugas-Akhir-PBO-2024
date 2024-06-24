@@ -1,15 +1,20 @@
 package Projectiles;
 
 import Main.GamePanel;
+import Main.GameWindow;
 import Object.Enemies.Zombie;
 
 import java.awt.*;
 
 public class Pea {
-
+    private GamePanel gamePanel;
     public int posX;
     protected GamePanel gp;
     public int myLane;
+
+    public Pea(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 
     public Pea(GamePanel parent,int lane,int startX){
         this.gp = parent;
@@ -29,7 +34,7 @@ public class Pea {
                     System.out.println("ZOMBIE DIE");
                     
                     gp.laneZombies.get(myLane).remove(i);
-                    GamePanel.setProgress(10);
+                    gamePanel.setProgress(10);
                     exit = true;
                 }
                 gp.lanePeas.get(myLane).remove(this);
@@ -41,5 +46,7 @@ public class Pea {
         }*/
         posX += 15;
     }
-
+    public void setGamePanel(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 }
