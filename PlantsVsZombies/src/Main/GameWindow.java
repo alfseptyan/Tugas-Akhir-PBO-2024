@@ -7,12 +7,12 @@ import GameScene.*;
 public class GameWindow extends JFrame {
     public static GameWindow gw;
     public GameWindow(){
-        setSize(1012,885);
+        setSize(1012,820);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
         JLabel sun = new JLabel();
-        sun.setLocation(37,800);
+        sun.setLocation(37,750);
         sun.setSize(60,20);
 
         GamePanel gp = new GamePanel(sun);
@@ -20,12 +20,12 @@ public class GameWindow extends JFrame {
         getLayeredPane().add(gp,new Integer(0));
 
         DefensePanel defensePanel = new DefensePanel(gp);
-        defensePanel.setBounds(0, 720, 1012, 120);
+        defensePanel.setBounds(0, 675, 1012, 120);
         getLayeredPane().add(defensePanel, new Integer(2));
 
         getLayeredPane().add(sun,new Integer(3));
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
     }
     public GameWindow(boolean b) {
@@ -45,7 +45,6 @@ public class GameWindow extends JFrame {
 
         Backsound player = new Backsound("PlantsVsZombies/src/music/song.wav");
         player.play();
-
     }
 
 
@@ -53,5 +52,6 @@ public class GameWindow extends JFrame {
           gw = new GameWindow(true);
           Backsound menu = new Backsound("PlantsVsZombies/src/music/02. Crazy Dave (Intro Theme).wav");
           menu.play();
+          menu.loop();
     }
 }
