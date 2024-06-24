@@ -1,6 +1,7 @@
 package Projectiles;
 
 import Main.GamePanel;
+import Main.GameWindow;
 import Object.Enemies.Zombie;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ public class Pea {
     public int posX;
     protected GamePanel gp;
     public int myLane;
-
+    public  pea(GameWindow)
     public Pea(GamePanel parent,int lane,int startX){
         this.gp = parent;
         this.myLane = lane;

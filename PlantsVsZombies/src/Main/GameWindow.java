@@ -11,11 +11,21 @@ public class GameWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
 
-        JLabel sun = new JLabel();
+        JLabel sun = new JLabel("Sun");
         sun.setLocation(37,750);
         sun.setSize(60,20);
 
-        GamePanel gp = new GamePanel(sun);
+        JLabel zombieDefeatedLabel = new JLabel("Zombies Defeated: " + );
+        zombieDefeatedLabel.setLocation(150, 20);
+        zombieDefeatedLabel.setSize(200, 20);
+        getLayeredPane().add(zombieDefeatedLabel, new Integer(2));
+
+        JLabel waveNumberLabel = new JLabel("Wave: 1");
+        waveNumberLabel.setLocation(350, 20);
+        waveNumberLabel.setSize(100, 20);
+        getLayeredPane().add(waveNumberLabel, new Integer(2));
+
+        GamePanel gp = new GamePanel(sun,zombieDefeatedLabel,waveNumberLabel);
         gp.setLocation(0,0);
         getLayeredPane().add(gp,new Integer(0));
 

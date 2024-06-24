@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Random;
 public class GamePanel extends JLayeredPane implements MouseMotionListener {
 
+    private final JLabel waveNumberLabel;
+    private final JLabel zombieDefeatedLabel;
     Image bgImage;
     Image peashooterImage;
     Image freezePeashooterImage;
@@ -30,7 +32,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     Image normalZombieImage;
     Image coneHeadZombieImage;
     public Collider[] colliders;
-    
+
     public ArrayList<ArrayList<Zombie>> laneZombies;
     public ArrayList<ArrayList<Pea>> lanePeas;
     public ArrayList<Sun> activeSuns;
@@ -52,9 +54,13 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private int zombiesSpawnedInWave;
 
 
-    public GamePanel(JLabel sunScoreboard){
+    public GamePanel(JLabel sunScoreboard, JLabel zombieDefeatedLabel, JLabel waveNumberLabel){
         this.sunScoreboard = sunScoreboard;
+        this.zombieDefeatedLabel= zombieDefeatedLabel;
+        this.waveNumberLabel=waveNumberLabel;
         setSunScore(150);
+        updateWaveNumber();
+        updateZombieDefeated();
 
         initUI();
         loadImages();
@@ -82,6 +88,10 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         });
         sunProducer.start();
     }
+
+    private void updateWaveNumber() {
+    }
+    private void updateZombieDefeated(){}
 
     private void startWave() {
         // Reset the count of zombies spawned in the wave
@@ -191,6 +201,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         this.sunScore = sunScore;
         sunScoreboard.setText(String.valueOf(sunScore));
     }
+
     public static void setProgress(int num) {
         progress = progress + num;
         System.out.println(progress);
