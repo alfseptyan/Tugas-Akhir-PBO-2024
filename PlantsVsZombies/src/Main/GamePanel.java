@@ -4,6 +4,7 @@ import Object.Allies.*;
 import Object.Enemies.ConeHeadZombie;
 import Object.Enemies.NormalZombie;
 import Object.Enemies.Zombie;
+import Object.Enemies.iMovement;
 import Projectiles.FreezePea;
 import Projectiles.Pea;
 import Projectiles.Sun;
@@ -17,20 +18,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Random;
-public class GamePanel extends JLayeredPane implements MouseMotionListener {
+public class GamePanel extends JLayeredPane implements MouseMotionListener, iMovement {
 
     private static JLabel waveNumberLabel;
     private static JLabel zombieDefeatedLabel;
-    Image bgImage;
-    Image peashooterImage;
-    Image freezePeashooterImage;
-    Image sunflowerImage;
-    Image peaImage;
-    Image freezePeaImage;
-    Image wallnutImage;
+    private Image bgImage;
+    private Image peashooterImage;
+    private Image freezePeashooterImage;
+    private Image sunflowerImage;
+    private Image peaImage;
+    private Image freezePeaImage;
+    private Image wallnutImage;
 
-    Image normalZombieImage;
-    Image coneHeadZombieImage;
+    private Image normalZombieImage;
+    private Image coneHeadZombieImage;
     public Collider[] colliders;
 
     public ArrayList<ArrayList<Zombie>> laneZombies;
@@ -42,16 +43,12 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     Timer sunProducer;
     Timer zombieProducer;
     JLabel sunScoreboard;
-    static JLabel gameScoreBoard;
-
     public DefenseType activePlantingBrush = DefenseType.None;
-
     int mouseX , mouseY;
-
     private int sunScore;
     static int progress = 0;
     private int waveNumber = 1;
-    private int zombiesInCurrentWave = waveNumber * 2;
+    private final int zombiesInCurrentWave = waveNumber * 2;
     private int zombiesSpawnedInWave;
 
 
@@ -61,8 +58,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         GamePanel.waveNumberLabel =waveNumberLabel;
         setSunScore(150);
         setProgress(0);
-        updateWaveNumber();
-        updateZombieDefeated();
 
         initUI();
         loadImages();
@@ -90,18 +85,9 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         });
         sunProducer.start();
     }
-
-    private void updateWaveNumber() {
-    }
-    private void updateZombieDefeated(){}
-
-
-    // Metode getter untuk progress jika diperlukan
     public static int getProgress() {
         return progress;
     }
-
-    // Metode getter untuk zombieDefeatedCount jika diperlukan
     private void startWave() {
         // Reset the count of zombies spawned in the wave
         zombiesSpawnedInWave = 0;
@@ -118,6 +104,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
                 // Stop the timer and prepare for the next wave
                 zombieProducer.stop();
                 waveNumber++;
+                waveNumberLabel.setText(String.valueOf(waveNumber));
                 startWave();
             }
         });
@@ -131,107 +118,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             }).start();
         }
     }
-    private void togglePause() {
-        isPaused = !isPaused;
-        if (isPaused) {
-            redrawTimer.stop();
-            advancerTimer.stop();
-            sunProducer.stop();
-            if (zombieProducer != null) {
-                zombieProducer.stop();
-            }
-        } else {
-            redrawTimer.start();
-            advancerTimer.start();
-            sunProducer.start();
-            if (zombieProducer != null) {
-                zombieProducer.start();
-            }
-        }
-        repaint();
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            togglePause();
-        }
-        System.out.println("Key Pressed: " + e.getKeyCode());
-    }
-    private void initUI() {
-        setSize(1000, 752);
-        setLayout(null);
-        addMouseMotionListener(this);
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (isPaused) {
-                    int mouseX = e.getX();
-                    int mouseY = e.getY();
-                    if (pausedOverlay.isResumeButtonClicked(mouseX, mouseY)) {
-                        togglePause();
-                    } else if (pausedOverlay.isQuitButtonClicked(mouseX, mouseY)) {
-                        System.exit(0); // Keluar dari game
-                    }
-                } else {
-                    handleGameMouseClick(e);
-                }
-            }
-        });
-        addKeyListener(this);
-        setFocusable(true);
-    }
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(bgImage, 0, 0, 1000, 752, null);
-
-        // Draw Plants
-        for (int i = 0; i < 45; i++) {
-            Collider c = colliders[i];
-            if (c.assignedDefense != null) {
-                Defense p = c.assignedDefense;
-                if (p instanceof Peashooter) {
-                    g.drawImage(peashooterImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
-                }
-                if (p instanceof FreezePeashooter) {
-                    g.drawImage(freezePeashooterImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
-                }
-                if (p instanceof Sunflower) {
-                    g.drawImage(sunflowerImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
-                }
-                if (p instanceof Walnut) {
-                    g.drawImage(wallnutImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
-                }
-            }
-        }
-
-        for (int i = 0; i < 5; i++) {
-            for (Zombie z : laneZombies.get(i)) {
-                if (z instanceof NormalZombie) {
-                    g.drawImage(normalZombieImage, z.posX, 249 + (i * 80), null);
-                } else if (z instanceof ConeHeadZombie) {
-                    g.drawImage(coneHeadZombieImage, z.posX, 249 + (i * 80), null);
-                }
-            }
-
-            for (int j = 0; j < lanePeas.get(i).size(); j++) {
-                Pea p = lanePeas.get(i).get(j);
-                if (p instanceof FreezePea) {
-                    g.drawImage(freezePeaImage, p.posX, 269 + (i * 80), null);
-                } else {
-                    g.drawImage(peaImage, p.posX, 269 + (i * 80), null);
-                }
-            }
-        }
-
-        // Draw Paused Overlay if the game is paused
-        if (isPaused) {
-            pausedOverlay.draw(g, getWidth(), getHeight());
-        }
-    }
-
-
     private int calculateTotalDelay(int waveNumber) {
         // Define logic to calculate the total delay based on the wave number
         // Example: Increase delay as the wave number increases
@@ -312,24 +198,30 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             add(a, new Integer(0));
         }
     }
-    private void advance(){
-        for (int i = 0; i < 5 ; i++) {
-            for(Zombie z : laneZombies.get(i)){
+    public void advance() {
+        // Loop through each lane (0 to 4)
+        for (int i = 0; i < 5; i++) {
+            // Advance each zombie in the current lane
+            for (Zombie z : laneZombies.get(i)) {
                 z.advance();
             }
 
+            // Advance each pea in the current lane
             for (int j = 0; j < lanePeas.get(i).size(); j++) {
                 Pea p = lanePeas.get(i).get(j);
                 p.advance();
             }
-
         }
-
-        for (int i = 0; i < activeSuns.size() ; i++) {
+        // Advance each active sun
+        for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).advance();
         }
+    }
+    @Override
+    public void stop() {
 
     }
+
     public int getSunScore() {
         return sunScore;
     }
@@ -337,7 +229,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         this.sunScore = sunScore;
         sunScoreboard.setText(String.valueOf(sunScore));
     }
-
     public static void setProgress(int num) {
         progress = progress + num;
         System.out.println(progress);
@@ -402,7 +293,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
 
 
     }
-
     @Override
     public void mouseDragged(MouseEvent e) {
 

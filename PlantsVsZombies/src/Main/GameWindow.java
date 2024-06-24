@@ -21,13 +21,18 @@ public class GameWindow extends JFrame {
         scoreLabel.setSize(200, 20);
         getLayeredPane().add(scoreLabel, new Integer(2));
 
-        JLabel zombieDefeatedLabel = new JLabel("Score : ");
+        JLabel zombieDefeatedLabel = new JLabel();
         zombieDefeatedLabel.setLocation(800, 680);
         zombieDefeatedLabel.setSize(200, 20);
         getLayeredPane().add(zombieDefeatedLabel, new Integer(2));
 
-        JLabel waveNumberLabel = new JLabel("Wave: 1");
-        waveNumberLabel.setLocation(900, 680);
+        JLabel waveLabel= new JLabel("Wave: ");
+        waveLabel.setLocation(900, 680);
+        waveLabel.setSize(200, 20);
+        getLayeredPane().add(waveLabel, new Integer(2));
+
+        JLabel waveNumberLabel = new JLabel("0");
+        waveNumberLabel.setLocation(950, 680);
         waveNumberLabel.setSize(200, 20);
         getLayeredPane().add(waveNumberLabel, new Integer(2));
 
@@ -37,9 +42,6 @@ public class GameWindow extends JFrame {
         DefensePanel defensePanel = new DefensePanel(gp);
         defensePanel.setBounds(0, 675, 1012, 120);
         getLayeredPane().add(defensePanel, new Integer(2));
-
-
-
 
         getLayeredPane().add(sun,new Integer(3));
         setLocationRelativeTo(null);
@@ -64,7 +66,6 @@ public class GameWindow extends JFrame {
         Backsound player = new Backsound("PlantsVsZombies/src/music/song.wav");
         player.play();
     }
-
 
     public static void main(String[] args) {
           gw = new GameWindow(true);

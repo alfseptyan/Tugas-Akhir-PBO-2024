@@ -4,6 +4,8 @@ package Tool;
 import Main.GamePanel;
 import javax.swing.*;
 import Object.Allies.DefenseType;
+import Object.Enemies.Zombie;
+import Projectiles.Pea;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +17,7 @@ public class DefensePanel extends JPanel {
     private DefenseCard freezepeashooter;
     private DefenseCard wallnut;
     private DefenseCard money;
-    private DefenseCard shovel;
+    private JButton pauseButton;
     private JLabel sun;
     public DefensePanel(GamePanel gp) {
         setLayout(null);
@@ -32,12 +34,6 @@ public class DefensePanel extends JPanel {
         money.setLocation(8,8);
         money.setOpaque(false);
         add(money);
-
-        shovel = new DefenseCard(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/shovel.png.png"))).getImage());
-        shovel.setSize(10,90);
-        shovel.setLocation(10,8);
-        shovel.setOpaque(false);
-        add(shovel);
 
         sunflower = new DefenseCard(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/images/cards/card_sunflower.png"))).getImage());
         sunflower.setLocation(110, 8);
@@ -67,7 +63,28 @@ public class DefensePanel extends JPanel {
         });
         add(wallnut);
 
+        // Add pause button
+//        pauseButton = new JButton("Pause");
+//        pauseButton.setLocation(370, 8);
+//        pauseButton.setSize(80, 30);
+//        pauseButton.addActionListener((ActionEvent e) -> {
+//            for (int i = 0; i < 5; i++) {
+//                // Advance each zombie in the current lane
+//                for (Zombie z : gp.laneZombies.get(i)) {
+//                    z.stop();
+//                }
+//
+//                // Advance each pea in the current lane
+//                for (int j = 0; j < gp.lanePeas.get(i).size(); j++) {
+//                    Pea p = gp.lanePeas.get(i).get(j);
+//                    p.stop();
+//                }
+//            }
+//
+//        });
+//        add(pauseButton);
     }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.GRAY);

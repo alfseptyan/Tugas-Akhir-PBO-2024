@@ -8,16 +8,16 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 public class Sun extends JPanel implements MouseListener {
-    DefensePanel df;
+    private GamePanel gp;
+    private Image sunImage;
 
-    GamePanel gp;
-    Image sunImage;
+    private int myX;
+    private int myY;
+    private int endY;
 
-    int myX;
-    int myY;
-    int endY;
+    private int destruct = 200;
+    private boolean isMoving = true; // Add this field to manage movement state
 
-    int destruct = 200;
 
     public Sun(GamePanel parent,int startX,int startY,int endY){
         this.gp = parent;
@@ -38,6 +38,8 @@ public class Sun extends JPanel implements MouseListener {
     }
 
     public void advance(){
+        if (!isMoving) return; // Add this line to stop movement when isMoving is false
+
         if(myY < endY) {
             myY+= 4;
         }else{
@@ -48,6 +50,9 @@ public class Sun extends JPanel implements MouseListener {
             }
         }
         setLocation(myX,myY);
+    }
+    public void stop() {
+        isMoving = false; // Add this line to stop the sun
     }
 
     @Override

@@ -1,28 +1,28 @@
 package Projectiles;
 
 import Main.GamePanel;
-import Main.GameWindow;
 import Object.Enemies.Zombie;
+import Object.Enemies.iMovement;
 
 import java.awt.*;
 
-public class Pea {
+public class Pea implements iMovement {
     private GamePanel gamePanel;
     public int posX;
     protected GamePanel gp;
     public int myLane;
+    private boolean isMoving = true;
 
     public Pea(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }
-
     public Pea(GamePanel parent,int lane,int startX){
         this.gp = parent;
         this.myLane = lane;
         posX = startX;
     }
-
     public void advance(){
+        if (!isMoving) return; // Add this line to stop movement when isMoving is false
         Rectangle pRect = new Rectangle(posX,130+myLane*120,28,28);
         for (int i = 0; i < gp.laneZombies.get(myLane).size(); i++) {
             Zombie z = gp.laneZombies.get(myLane).get(i);
@@ -45,6 +45,9 @@ public class Pea {
             gp.lanePeas.get(myLane).remove(this);
         }*/
         posX += 15;
+    }
+    public void stop() {
+        isMoving = false;
     }
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;

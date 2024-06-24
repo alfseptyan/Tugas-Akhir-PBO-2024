@@ -1,12 +1,13 @@
 package Object.Enemies;
 
+import GameScene.GameOver;
 import Main.GamePanel;
 import Main.GameWindow;
 import Tool.*;
 
 import javax.swing.*;
 
-public class Zombie {
+public class Zombie implements iMovement{
 
     public int health = 1000;
     int slowInt = 0;
@@ -47,11 +48,12 @@ public class Zombie {
             }
             if (posX < 0) {
                 isMoving = false;
-                JOptionPane.showMessageDialog(gp,"ZOMBIES ATE YOUR BRAIN !" + '\n' + "Starting the level again");
-                GameWindow.gw.dispose();
-                GameWindow.gw = new GameWindow();
+                GameOver.trigger(gp);
             }
         }
+    }
+    public void stop() {
+        isMoving = false;
     }
     public void slow(){
         slowInt = 1000;
