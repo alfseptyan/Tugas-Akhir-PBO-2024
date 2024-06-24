@@ -138,7 +138,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     }
     private int calculateTimeDelay(int waveNumber) {
         // Define logic to calculate the time delay based on the wave number
-        return Math.max(1 - (waveNumber * 1000), 1000);
+        return Math.max(12000 - (waveNumber * 1000), 1000);
     }
     private void spawnZombie() {
         Random rnd = new Random();
