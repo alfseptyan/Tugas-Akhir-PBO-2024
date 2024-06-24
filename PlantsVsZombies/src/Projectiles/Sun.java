@@ -2,12 +2,13 @@ package Projectiles;
 
 import Main.GamePanel;
 import Tool.DefensePanel;
+import Tool.iMovement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-public class Sun extends JPanel implements MouseListener {
+public class Sun extends JPanel implements MouseListener, iMovement {
     private GamePanel gp;
     private Image sunImage;
 
@@ -52,7 +53,12 @@ public class Sun extends JPanel implements MouseListener {
         setLocation(myX,myY);
     }
     public void stop() {
-        isMoving = false; // Add this line to stop the sun
+        isMoving = false;
+    }
+
+    @Override
+    public void start() {
+        isMoving = true;
     }
 
     @Override

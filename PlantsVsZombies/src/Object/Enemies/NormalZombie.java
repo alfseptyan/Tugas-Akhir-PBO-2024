@@ -1,6 +1,7 @@
 package Object.Enemies;
 
 import Main.GamePanel;
+import Tool.iMovement;
 
 public class NormalZombie extends Zombie implements iMovement {
 

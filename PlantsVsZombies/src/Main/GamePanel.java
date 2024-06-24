@@ -4,7 +4,7 @@ import Object.Allies.*;
 import Object.Enemies.ConeHeadZombie;
 import Object.Enemies.NormalZombie;
 import Object.Enemies.Zombie;
-import Object.Enemies.iMovement;
+import Tool.iMovement;
 import Projectiles.FreezePea;
 import Projectiles.Pea;
 import Projectiles.Sun;
@@ -50,6 +50,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
     private int waveNumber = 1;
     private final int zombiesInCurrentWave = waveNumber * 2;
     private int zombiesSpawnedInWave;
+    private boolean isPaused = false;
 
 
     public GamePanel(JLabel sunScoreboard, JLabel zombieDefeatedLabel, JLabel waveNumberLabel){
@@ -198,7 +199,10 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
             add(a, new Integer(0));
         }
     }
+
+    //    Movement and Stopping Part
     public void advance() {
+        if (isPaused) return;
         // Loop through each lane (0 to 4)
         for (int i = 0; i < 5; i++) {
             // Advance each zombie in the current lane
@@ -219,9 +223,68 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
     }
     @Override
     public void stop() {
+        // Loop through each lane (0 to 4)
+        for (int i = 0; i < 5; i++) {
+            // Advance each zombie in the current lane
+            for (Zombie z : laneZombies.get(i)) {
+                z.stop();
+            }
 
+            // Advance each pea in the current lane
+            for (int j = 0; j < lanePeas.get(i).size(); j++) {
+                Pea p = lanePeas.get(i).get(j);
+                p.stop();
+            }
+        }
+        // Advance each active sun
+        for (int i = 0; i < activeSuns.size(); i++) {
+            activeSuns.get(i).stop();
+        }
+    }
+    @Override
+    public void start() {
+    }
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+    public void stopAllTimers() {
+        redrawTimer.stop();
+        advancerTimer.stop();
+        sunProducer.stop();
+        if (zombieProducer != null) {
+            zombieProducer.stop();
+        }
+    }
+    public void startAllTimers() {
+        redrawTimer.start();
+        advancerTimer.start();
+        sunProducer.start();
+        if (zombieProducer != null) {
+            zombieProducer.start();
+        }
+    }
+    public void startMovements() {
+        // Start each lane (0 to 4)
+        for (int i = 0; i < 5; i++) {
+            // Start each zombie in the current lane
+            for (Zombie z : laneZombies.get(i)) {
+                z.start();
+            }
+
+            // Start each pea in the current lane
+            for (int j = 0; j < lanePeas.get(i).size(); j++) {
+                Pea p = lanePeas.get(i).get(j);
+                p.start();
+            }
+        }
+
+        // Start each active sun
+        for (int i = 0; i < activeSuns.size(); i++) {
+            activeSuns.get(i).start();
+        }
     }
 
+    //    Getter and Setter part
     public int getSunScore() {
         return sunScore;
     }
@@ -239,6 +302,11 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         }
         zombieDefeatedLabel.setText(String.valueOf(progress));
     }
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    //    rendering and mouse listening part
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

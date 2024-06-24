@@ -18,6 +18,7 @@ public class DefensePanel extends JPanel {
     private DefenseCard wallnut;
     private DefenseCard money;
     private JButton pauseButton;
+    private JButton resumeButton;
     private JLabel sun;
     public DefensePanel(GamePanel gp) {
         setLayout(null);
@@ -63,26 +64,26 @@ public class DefensePanel extends JPanel {
         });
         add(wallnut);
 
-        // Add pause button
-//        pauseButton = new JButton("Pause");
-//        pauseButton.setLocation(370, 8);
-//        pauseButton.setSize(80, 30);
-//        pauseButton.addActionListener((ActionEvent e) -> {
-//            for (int i = 0; i < 5; i++) {
-//                // Advance each zombie in the current lane
-//                for (Zombie z : gp.laneZombies.get(i)) {
-//                    z.stop();
-//                }
-//
-//                // Advance each pea in the current lane
-//                for (int j = 0; j < gp.lanePeas.get(i).size(); j++) {
-//                    Pea p = gp.lanePeas.get(i).get(j);
-//                    p.stop();
-//                }
-//            }
-//
-//        });
-//        add(pauseButton);
+//         Add pause button
+        pauseButton = new JButton("Pause");
+        pauseButton.setLocation(820, 70);
+        pauseButton.setSize(80, 30);
+        pauseButton.addActionListener((ActionEvent e) -> {
+            gp.setPaused(true);
+            gp.stopAllTimers();
+            gp.stop();
+        });
+        add(pauseButton);
+
+        resumeButton = new JButton("Resume");
+        resumeButton.setLocation(900, 70);
+        resumeButton.setSize(80, 30);
+        resumeButton.addActionListener((ActionEvent e) -> {
+            gp.setPaused(false);
+            gp.startAllTimers();
+            gp.startMovements();
+        });
+        add(resumeButton);
     }
 
     protected void paintComponent(Graphics g) {

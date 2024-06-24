@@ -2,7 +2,7 @@ package Projectiles;
 
 import Main.GamePanel;
 import Object.Enemies.Zombie;
-import Object.Enemies.iMovement;
+import Tool.iMovement;
 
 import java.awt.*;
 
@@ -49,6 +49,12 @@ public class Pea implements iMovement {
     public void stop() {
         isMoving = false;
     }
+
+    @Override
+    public void start() {
+        isMoving = true;
+    }
+
     public void setGamePanel(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
     }

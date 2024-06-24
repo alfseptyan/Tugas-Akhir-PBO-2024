@@ -2,10 +2,7 @@ package Object.Enemies;
 
 import GameScene.GameOver;
 import Main.GamePanel;
-import Main.GameWindow;
 import Tool.*;
-
-import javax.swing.*;
 
 public class Zombie implements iMovement{
 
@@ -55,6 +52,12 @@ public class Zombie implements iMovement{
     public void stop() {
         isMoving = false;
     }
+
+    @Override
+    public void start() {
+        isMoving = true;
+    }
+
     public void slow(){
         slowInt = 1000;
     }
