@@ -40,6 +40,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     Timer sunProducer;
     Timer zombieProducer;
     JLabel sunScoreboard;
+    static JLabel gameScoreBoard;
 
     public DefenseType activePlantingBrush = DefenseType.None;
 
@@ -52,7 +53,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private int zombiesSpawnedInWave;
 
 
-    public GamePanel(JLabel sunScoreboard){
+    public GamePanel(JLabel sunScoreboard ){
         this.sunScoreboard = sunScoreboard;
         setSunScore(150);
 
@@ -88,7 +89,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         zombiesSpawnedInWave = 0;
 
         // Calculate the number of zombies and time delay based on the wave number
-        int zombiesToSpawn = calculateZombiesToSpawn(waveNumber);
+        zombiesInCurrentWave = calculateZombiesToSpawn(waveNumber);
         int timeDelay = calculateTimeDelay(waveNumber);
 
         // Set up the zombie producer timer
@@ -99,6 +100,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
                 // Stop the timer and prepare for the next wave
                 zombieProducer.stop();
                 waveNumber++;
+                System.out.println("Wave Number : "+waveNumber);
                 startWave();
             }
         });
@@ -112,7 +114,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private int calculateTimeDelay(int waveNumber) {
         // Define logic to calculate the time delay based on the wave number
         // Example: Decrease delay as the wave number increases
-        return Math.max(12000 - (waveNumber * 1000), 2000);
+        return Math.max(16000 - (waveNumber * 1000), 2000);
     }
     private void spawnZombie() {
         Random rnd = new Random();
@@ -130,8 +132,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             laneZombies.get(l).add(z);
         }
     }
-
-
     private void initUI(){
         setSize(1000,752);
         setLayout(null);
@@ -199,6 +199,9 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         } else if (progress > 500) {
             LevelData.changeSpawnProbability();
         }
+    }
+    public static int getProgress(){
+        return progress;
     }
     @Override
     protected void paintComponent(Graphics g) {

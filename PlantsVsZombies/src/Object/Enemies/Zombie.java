@@ -9,10 +9,8 @@ import javax.swing.*;
 public class Zombie {
 
     public int health = 1000;
-    public int speed = 1;
     int slowInt = 0;
     private GamePanel gp;
-
     public int posX = 1000;
     public int myLane;
     public boolean isMoving = true;

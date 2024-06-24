@@ -25,7 +25,7 @@ public class GameWindow extends JFrame {
 
         getLayeredPane().add(sun,new Integer(3));
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
     }
     public GameWindow(boolean b) {
@@ -45,7 +45,6 @@ public class GameWindow extends JFrame {
 
         Backsound player = new Backsound("PlantsVsZombies/src/music/song.wav");
         player.play();
-
     }
 
 
@@ -53,5 +52,6 @@ public class GameWindow extends JFrame {
           gw = new GameWindow(true);
           Backsound menu = new Backsound("PlantsVsZombies/src/music/02. Crazy Dave (Intro Theme).wav");
           menu.play();
+          menu.loop();
     }
 }
