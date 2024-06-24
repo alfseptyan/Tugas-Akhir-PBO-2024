@@ -40,7 +40,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     Timer sunProducer;
     Timer zombieProducer;
     JLabel sunScoreboard;
-    static JLabel gameScoreBoard;
 
     public DefenseType activePlantingBrush = DefenseType.None;
 
@@ -49,7 +48,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
     private int sunScore;
     static int progress = 0;
     private int waveNumber = 1;
-    private int zombiesInCurrentWave;
+    private int zombiesInCurrentWave = waveNumber * 2;
     private int zombiesSpawnedInWave;
 
 
@@ -88,33 +87,39 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         // Reset the count of zombies spawned in the wave
         zombiesSpawnedInWave = 0;
 
-        // Calculate the number of zombies and time delay based on the wave number
-        zombiesInCurrentWave = calculateZombiesToSpawn(waveNumber);
-        int timeDelay = calculateTimeDelay(waveNumber);
+        // Calculate the base delay and wave delay
+        int baseDelay = calculateTimeDelay(waveNumber);
+        int waveDelay = calculateTotalDelay(waveNumber);
 
-        // Set up the zombie producer timer
-        zombieProducer = new Timer(timeDelay, (ActionEvent e) -> {
+        // Spawn zombies individually with a base delay
+        zombieProducer = new Timer(baseDelay, (ActionEvent e) -> {
             spawnZombie();
             zombiesSpawnedInWave++;
             if (zombiesSpawnedInWave >= zombiesInCurrentWave) {
                 // Stop the timer and prepare for the next wave
                 zombieProducer.stop();
                 waveNumber++;
-                System.out.println("Wave Number : "+waveNumber);
                 startWave();
             }
         });
         zombieProducer.start();
+
+        // Spawn all zombies in a wave after the wave delay
+        if (getProgress() % 100 == 0) {
+            int extraWaves = getProgress() / 100;
+            new Timer(waveDelay, (ActionEvent e) -> {
+                spawnAllZombiesInWave(extraWaves);
+            }).start();
+        }
     }
-    private int calculateZombiesToSpawn(int waveNumber) {
-        // Define logic to calculate the number of zombies based on the wave number
-        // Example: Increase zombies by 5 with each wave
-        return 5 * waveNumber;
+    private int calculateTotalDelay(int waveNumber) {
+        // Define logic to calculate the total delay based on the wave number
+        // Example: Increase delay as the wave number increases
+        return Math.max(60000 - (waveNumber * 500), 2000); // Adjust delay as needed
     }
     private int calculateTimeDelay(int waveNumber) {
         // Define logic to calculate the time delay based on the wave number
-        // Example: Decrease delay as the wave number increases
-        return Math.max(16000 - (waveNumber * 1000), 2000);
+        return Math.max(12000 - (waveNumber * 1000), 1000);
     }
     private void spawnZombie() {
         Random rnd = new Random();
@@ -130,6 +135,27 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
         }
         if (z != null) {
             laneZombies.get(l).add(z);
+        }
+    }
+    private int calculateZombiesToSpawn(int zombieType, int waveNumber) {
+        // Define logic to calculate the number of zombies to spawn for each type based on the wave number
+        return waveNumber * LevelData.SpawnProbability[zombieType][0];
+    }
+    private void spawnAllZombiesInWave(int extraWave) {
+        Random rnd = new Random();
+        LevelData lvl = new LevelData();
+
+        for (int i = 0; i < LevelData.SpawnProbability.length; i++) {
+            for (int wave = 0; wave < extraWave; wave++) {
+                int numZombies = calculateZombiesToSpawn(i, waveNumber);
+                for (int j = 0; j < numZombies; j++) {
+                    int l = rnd.nextInt(5); // Assuming 5 lanes
+                    Zombie z = Zombie.getZombie(LevelData.ZombieTypes[i], GamePanel.this, l);
+                    if (z != null) {
+                        laneZombies.get(l).add(z);
+                    }
+                }
+            }
         }
     }
     private void initUI(){
@@ -178,7 +204,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             }
 
         }
-
         for (int i = 0; i < activeSuns.size() ; i++) {
             activeSuns.get(i).advance();
         }
