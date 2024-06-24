@@ -131,6 +131,107 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener {
             }).start();
         }
     }
+    private void togglePause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            redrawTimer.stop();
+            advancerTimer.stop();
+            sunProducer.stop();
+            if (zombieProducer != null) {
+                zombieProducer.stop();
+            }
+        } else {
+            redrawTimer.start();
+            advancerTimer.start();
+            sunProducer.start();
+            if (zombieProducer != null) {
+                zombieProducer.start();
+            }
+        }
+        repaint();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            togglePause();
+        }
+        System.out.println("Key Pressed: " + e.getKeyCode());
+    }
+    private void initUI() {
+        setSize(1000, 752);
+        setLayout(null);
+        addMouseMotionListener(this);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (isPaused) {
+                    int mouseX = e.getX();
+                    int mouseY = e.getY();
+                    if (pausedOverlay.isResumeButtonClicked(mouseX, mouseY)) {
+                        togglePause();
+                    } else if (pausedOverlay.isQuitButtonClicked(mouseX, mouseY)) {
+                        System.exit(0); // Keluar dari game
+                    }
+                } else {
+                    handleGameMouseClick(e);
+                }
+            }
+        });
+        addKeyListener(this);
+        setFocusable(true);
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(bgImage, 0, 0, 1000, 752, null);
+
+        // Draw Plants
+        for (int i = 0; i < 45; i++) {
+            Collider c = colliders[i];
+            if (c.assignedDefense != null) {
+                Defense p = c.assignedDefense;
+                if (p instanceof Peashooter) {
+                    g.drawImage(peashooterImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
+                }
+                if (p instanceof FreezePeashooter) {
+                    g.drawImage(freezePeashooterImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
+                }
+                if (p instanceof Sunflower) {
+                    g.drawImage(sunflowerImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
+                }
+                if (p instanceof Walnut) {
+                    g.drawImage(wallnutImage, 20 + (i % 9) * 115, 269 + (i / 9) * 80, null);
+                }
+            }
+        }
+
+        for (int i = 0; i < 5; i++) {
+            for (Zombie z : laneZombies.get(i)) {
+                if (z instanceof NormalZombie) {
+                    g.drawImage(normalZombieImage, z.posX, 249 + (i * 80), null);
+                } else if (z instanceof ConeHeadZombie) {
+                    g.drawImage(coneHeadZombieImage, z.posX, 249 + (i * 80), null);
+                }
+            }
+
+            for (int j = 0; j < lanePeas.get(i).size(); j++) {
+                Pea p = lanePeas.get(i).get(j);
+                if (p instanceof FreezePea) {
+                    g.drawImage(freezePeaImage, p.posX, 269 + (i * 80), null);
+                } else {
+                    g.drawImage(peaImage, p.posX, 269 + (i * 80), null);
+                }
+            }
+        }
+
+        // Draw Paused Overlay if the game is paused
+        if (isPaused) {
+            pausedOverlay.draw(g, getWidth(), getHeight());
+        }
+    }
+
+
     private int calculateTotalDelay(int waveNumber) {
         // Define logic to calculate the total delay based on the wave number
         // Example: Increase delay as the wave number increases
