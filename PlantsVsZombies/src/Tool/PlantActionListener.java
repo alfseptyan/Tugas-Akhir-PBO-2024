@@ -44,5 +44,6 @@ public class PlantActionListener implements ActionListener {
             }
         }
         gp.activePlantingBrush = DefenseType.None;
+        gp.setActivePlantImage(null);
     }
 }

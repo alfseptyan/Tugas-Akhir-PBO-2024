@@ -40,6 +40,7 @@ public class DefensePanel extends JPanel {
         sunflower.setLocation(110, 8);
         sunflower.setAction((ActionEvent e) -> {
             gp.activePlantingBrush = DefenseType.Sunflower;
+            gp.setActivePlantImage(gp.getSunflowerImage());
         });
         add(sunflower);
 
@@ -47,6 +48,7 @@ public class DefensePanel extends JPanel {
         peashooter.setLocation(175, 8);
         peashooter.setAction((ActionEvent e) -> {
             gp.activePlantingBrush = DefenseType.Peashooter;
+            gp.setActivePlantImage(gp.getPeashooterImage());
         });
         add(peashooter);
 
@@ -54,6 +56,7 @@ public class DefensePanel extends JPanel {
         freezepeashooter.setLocation(240, 8);
         freezepeashooter.setAction((ActionEvent e) -> {
             gp.activePlantingBrush = DefenseType.FreezePeashooter;
+            gp.setActivePlantImage(gp.getFreezePeashooterImage());
         });
         add(freezepeashooter);
 
@@ -61,6 +64,7 @@ public class DefensePanel extends JPanel {
         wallnut.setLocation(305, 8);
         wallnut.setAction((ActionEvent e) -> {
             gp.activePlantingBrush = DefenseType.Wallnut;
+            gp.setActivePlantImage(gp.getWallnutImage());
         });
         add(wallnut);
 

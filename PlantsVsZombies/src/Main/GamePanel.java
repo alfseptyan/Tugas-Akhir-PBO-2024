@@ -51,6 +51,9 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
     private final int zombiesInCurrentWave = waveNumber * 2;
     private int zombiesSpawnedInWave;
     private boolean isPaused = false;
+    private Image activePlantImage;
+    private int activePlantImageX;
+    private int activePlantImageY;
 
 
     public GamePanel(JLabel sunScoreboard, JLabel zombieDefeatedLabel, JLabel waveNumberLabel){
@@ -59,6 +62,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         GamePanel.waveNumberLabel =waveNumberLabel;
         setSunScore(150);
         setProgress(0);
+        addMouseMotionListener(this);
 
         initUI();
         loadImages();
@@ -145,7 +149,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         }
     }
     private int calculateZombiesToSpawn(int zombieType, int waveNumber) {
-        // Define logic to calculate the number of zombies to spawn for each type based on the wave number
         return waveNumber * LevelData.SpawnProbability[zombieType][0];
     }
     private void spawnAllZombiesInWave(int extraWave) {
@@ -196,7 +199,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
             a.setLocation(3 + (i % 9) * 115, 269 + (i / 9) * 80);
             a.setAction(new PlantActionListener(this, (i % 9), (i / 9)));
             colliders[i] = a;
-            add(a, new Integer(0));
+            add(a);
         }
     }
 
@@ -322,10 +325,21 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         }
         zombieDefeatedLabel.setText(String.valueOf(progress));
     }
-    public boolean isPaused() {
-        return isPaused;
+    public Image getSunflowerImage() {
+        return sunflowerImage;
     }
-
+    public void setActivePlantImage(Image image) {
+        this.activePlantImage = image;
+    }
+    public Image getPeashooterImage() {
+        return peashooterImage;
+    }
+    public Image getFreezePeashooterImage() {
+        return freezePeashooterImage;
+    }
+    public Image getWallnutImage() {
+        return wallnutImage;
+    }
     //    rendering and mouse listening part
     @Override
     protected void paintComponent(Graphics g) {
@@ -370,24 +384,30 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
                 }
             }
 
+
+        }
+        // Top Left Active Plant
+        if (activePlantImage != null) {
+            int x = 5;
+            int y = 10;
+            g.drawImage(activePlantImage, x, y, null);
         }
 
-//        if(!"".equals(activePlantingBrush)){
-//            System.out.println(activePlantingBrush);
-//            if(activePlantingBrush == GameWindow.PlantType.Sunflower) {
-//                g.drawImage(sunflowerImage,mouseX,mouseY,null);
-//            }
+        // Follow Mouse Active Plant
+//        if (activePlantImage != null) {
+//            int x = mouseX - activePlantImage.getWidth(null) / 2;
+//            int y = mouseY - activePlantImage.getHeight(null) / 2;
+//            g.drawImage(activePlantImage, x, y, null);
 //        }
-
-
     }
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        mouseMoved(e);
     }
     @Override
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+        repaint();
     }
 }
