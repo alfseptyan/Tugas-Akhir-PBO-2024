@@ -73,6 +73,5 @@ public class GameWindow extends JFrame {
           gw = new GameWindow(true);
           Backsound menu = new Backsound("PlantsVsZombies/src/music/02. Crazy Dave (Intro Theme).wav");
           menu.play();
-          menu.loop();
     }
 }

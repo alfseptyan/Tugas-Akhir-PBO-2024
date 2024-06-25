@@ -12,10 +12,6 @@ public class Pea implements iMovement {
     protected GamePanel gp;
     public int myLane;
     private boolean isMoving = true;
-
-    public Pea(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
-    }
     public Pea(GamePanel parent,int lane,int startX){
         this.gp = parent;
         this.myLane = lane;
@@ -49,13 +45,8 @@ public class Pea implements iMovement {
     public void stop() {
         isMoving = false;
     }
-
     @Override
     public void start() {
         isMoving = true;
-    }
-
-    public void setGamePanel(GamePanel gamePanel) {
-        this.gamePanel = gamePanel;
     }
 }
