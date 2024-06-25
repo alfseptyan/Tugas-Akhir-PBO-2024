@@ -220,6 +220,12 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).advance();
         }
+        // Advance each sunflower to potentially produce suns
+        for (int i = 0; i < 45; i++) {
+            if (colliders[i].assignedDefense instanceof Sunflower) {
+                ((Sunflower) colliders[i].assignedDefense).advance();
+            }
+        }
     }
     @Override
     public void stop() {
@@ -239,6 +245,13 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         // Advance each active sun
         for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).stop();
+        }
+        // Sunflower
+        for (int i = 0; i < 45; i++) {
+            Collider c = colliders[i];
+            if (c.assignedDefense instanceof Sunflower) {
+                c.assignedDefense.stop();
+            }
         }
     }
     @Override
@@ -281,6 +294,13 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         // Start each active sun
         for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).start();
+        }
+        // Sunflower
+        for (int i = 0; i < 45; i++) {
+            Collider c = colliders[i];
+            if (c.assignedDefense instanceof Sunflower) {
+                ((Sunflower) c.assignedDefense).start();
+            }
         }
     }
 
