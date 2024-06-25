@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Random;
 public class GamePanel extends JLayeredPane implements MouseMotionListener, iMovement {
 
-    private static JLabel waveNumberLabel;
+    public static JLabel waveNumberLabel;
     private static JLabel zombieDefeatedLabel;
     private Image bgImage;
     private Image peashooterImage;
@@ -52,10 +52,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
     private int zombiesSpawnedInWave;
     private boolean isPaused = false;
     private Image activePlantImage;
-    private int activePlantImageX;
-    private int activePlantImageY;
-
-
     public GamePanel(JLabel sunScoreboard, JLabel zombieDefeatedLabel, JLabel waveNumberLabel){
         this.sunScoreboard = sunScoreboard;
         GamePanel.zombieDefeatedLabel = zombieDefeatedLabel;
@@ -71,7 +67,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         startWave();
 
         activeSuns = new ArrayList<>();
-
         // Timer
         redrawTimer = new Timer(25,(ActionEvent e) -> {
             repaint();
@@ -90,6 +85,26 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         });
         sunProducer.start();
     }
+
+    // Screen and Image Rendering
+    private void initUI(){
+        setSize(1000,752);
+        setLayout(null);
+        addMouseMotionListener(this);
+    }
+    private void loadImages(){
+        bgImage  = new ImageIcon(this.getClass().getResource("/images/map.png")).getImage();
+        peashooterImage = new ImageIcon(this.getClass().getResource("/images/plants/peashooter.gif")).getImage();
+        freezePeashooterImage = new ImageIcon(this.getClass().getResource("/images/plants/freezepeashooter.gif")).getImage();
+        sunflowerImage = new ImageIcon(this.getClass().getResource("/images/plants/sunflower.gif")).getImage();
+        peaImage = new ImageIcon(this.getClass().getResource("/images/pea.png")).getImage();
+        freezePeaImage = new ImageIcon(this.getClass().getResource("/images/freezepea.png")).getImage();
+        wallnutImage = new ImageIcon(this.getClass().getResource("/images/plants/wallnut.png")).getImage();
+        normalZombieImage = new ImageIcon(this.getClass().getResource("/images/zombies/zombie1.png")).getImage();
+        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("/images/zombies/zombie2.png")).getImage();
+    }
+
+    // Zombies Spawn Logic and Progression
     public static int getProgress() {
         return progress;
     }
@@ -168,22 +183,6 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
             }
         }
     }
-    private void initUI(){
-        setSize(1000,752);
-        setLayout(null);
-        addMouseMotionListener(this);
-    }
-    private void loadImages(){
-        bgImage  = new ImageIcon(this.getClass().getResource("/images/map.png")).getImage();
-        peashooterImage = new ImageIcon(this.getClass().getResource("/images/plants/peashooter.gif")).getImage();
-        freezePeashooterImage = new ImageIcon(this.getClass().getResource("/images/plants/freezepeashooter.gif")).getImage();
-        sunflowerImage = new ImageIcon(this.getClass().getResource("/images/plants/sunflower.gif")).getImage();
-        peaImage = new ImageIcon(this.getClass().getResource("/images/pea.png")).getImage();
-        freezePeaImage = new ImageIcon(this.getClass().getResource("/images/freezepea.png")).getImage();
-        wallnutImage = new ImageIcon(this.getClass().getResource("/images/plants/wallnut.png")).getImage();
-        normalZombieImage = new ImageIcon(this.getClass().getResource("/images/zombies/zombie1.png")).getImage();
-        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("/images/zombies/zombie2.png")).getImage();
-    }
     private void initializeLanes() {
         laneZombies = new ArrayList<>(5);
         lanePeas = new ArrayList<>(5);
@@ -203,7 +202,7 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
         }
     }
 
-    //    Movement and Stopping Part
+    //    Entities Movement and Time Control
     public void advance() {
         if (isPaused) return;
         // Loop through each lane (0 to 4)
@@ -340,7 +339,8 @@ public class GamePanel extends JLayeredPane implements MouseMotionListener, iMov
     public Image getWallnutImage() {
         return wallnutImage;
     }
-    //    rendering and mouse listening part
+
+    //    Rendering and Mouse Listening
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

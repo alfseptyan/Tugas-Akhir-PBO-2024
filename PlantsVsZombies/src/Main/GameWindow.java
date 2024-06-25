@@ -62,6 +62,8 @@ public class GameWindow extends JFrame {
     public static void begin() {
         gw.dispose();
        gw = new GameWindow();
+        GamePanel.setProgress(0);
+        GamePanel.waveNumberLabel.setText(String.valueOf(0));
 
         Backsound player = new Backsound("PlantsVsZombies/src/music/song.wav");
         player.play();
