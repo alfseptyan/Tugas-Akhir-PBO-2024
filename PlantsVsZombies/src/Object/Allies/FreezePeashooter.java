@@ -8,10 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 
 public class FreezePeashooter extends Defense {
-
     public Timer shootTimer;
-
-
     public FreezePeashooter(GamePanel parent, int x, int y) {
         super(parent,x,y);
         shootTimer = new Timer(2000,(ActionEvent e) -> {
@@ -22,7 +19,6 @@ public class FreezePeashooter extends Defense {
         });
         shootTimer.start();
     }
-
     @Override
     public void stop(){
         shootTimer.stop();

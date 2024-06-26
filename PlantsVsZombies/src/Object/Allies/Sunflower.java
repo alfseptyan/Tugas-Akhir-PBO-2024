@@ -7,13 +7,10 @@ import Tool.iMovement;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 public class Sunflower extends Defense implements iMovement{
-
     private static final int SUN_PRODUCTION_INTERVAL = 12000; // 12 seconds
-
     private long lastSunProductionTime;
     private boolean isPaused;
     private long pauseStartTime;
-
     public Sunflower(GamePanel parent, int x, int y) {
         super(parent, x, y);
         if (health > 0) {
@@ -21,7 +18,6 @@ public class Sunflower extends Defense implements iMovement{
             isPaused = false;
         }
     }
-
     public void produceSun() {
         if (!isPaused && (System.currentTimeMillis() - lastSunProductionTime >= SUN_PRODUCTION_INTERVAL)) {
             Sun sta = new Sun(gp, 60 + getX() * 100, 110 + getY() * 120, 130 + getY() * 120);
@@ -30,7 +26,6 @@ public class Sunflower extends Defense implements iMovement{
             lastSunProductionTime = System.currentTimeMillis();
         }
     }
-
     @Override
     public void stop() {
         if (!isPaused) {
@@ -38,7 +33,6 @@ public class Sunflower extends Defense implements iMovement{
             isPaused = true;
         }
     }
-
     @Override
     public void start() {
         if (isPaused) {
@@ -48,7 +42,6 @@ public class Sunflower extends Defense implements iMovement{
             isPaused = false;
         }
     }
-
     @Override
     public void advance() {
         produceSun();

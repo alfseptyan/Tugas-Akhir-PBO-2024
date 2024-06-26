@@ -6,9 +6,7 @@ import Projectiles.Pea;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 public class Peashooter extends Defense {
-
     public Timer shootTimer;
-
 
     public Peashooter(GamePanel parent, int x, int y) {
         super(parent,x,y);
@@ -20,7 +18,6 @@ public class Peashooter extends Defense {
         });
         shootTimer.start();
     }
-
     @Override
     public void stop(){
         shootTimer.stop();

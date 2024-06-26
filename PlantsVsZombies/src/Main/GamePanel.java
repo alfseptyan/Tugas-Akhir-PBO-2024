@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Random;
 public class GamePanel extends JLayeredPane implements MouseMotionListener, iMovement {
 
-    public static JLabel waveNumberLabel;
-    private static JLabel zombieDefeatedLabel;
+    protected static JLabel waveNumberLabel;
+    protected static JLabel zombieDefeatedLabel;
     private Image bgImage;
     private Image peashooterImage;
     private Image freezePeashooterImage;

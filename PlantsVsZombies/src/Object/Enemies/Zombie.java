@@ -5,19 +5,16 @@ import Main.GamePanel;
 import Tool.*;
 
 public class Zombie implements iMovement{
-
     public int health = 1000;
     int slowInt = 0;
     private GamePanel gp;
     public int posX = 1000;
     public int myLane;
     public boolean isMoving = true;
-
     public Zombie(GamePanel parent,int lane){
         this.gp = parent;
         myLane = lane;
     }
-
     public void advance(){
         if(isMoving) {
             boolean isCollides = false;
@@ -52,7 +49,6 @@ public class Zombie implements iMovement{
     public void stop() {
         isMoving = false;
     }
-
     @Override
     public void start() {
         isMoving = true;

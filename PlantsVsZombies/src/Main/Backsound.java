@@ -26,7 +26,6 @@ public class Backsound {
             clip.start();
         }
     }
-
     public void loop() {
         if (clip != null) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
